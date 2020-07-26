@@ -3,6 +3,8 @@ Web application for the buying and selling of offroad machines like dirtbikes
 
 The live version can be found at http://www.therawdirt.com/
 
+![Preview image for RawDirt website](preview.png)
+
 ## Has the following features:
 - Display offroad listings from database
 - CRUD operations for both the offroad listings and user profiles

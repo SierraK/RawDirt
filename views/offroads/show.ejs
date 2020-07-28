@@ -1,0 +1,107 @@
+<%- include("../partials/header") %> 
+
+<div style="margin-top: 5%;" class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-7">
+            <div class="card w-100">
+                <img class="card-img-top show-card-image" src="<%= offroad.image %>">
+                <div class="card-body">
+                    <h4 class="card-title d-inline"><%= offroad.name %></h4>
+                    <h4 class="float-right">$<%= offroad.price %> </h4>
+                    <p class="card-text mt-3"><%= offroad.description %></p>
+                        <p class="mb-2 d-inline"><em>Submitted By <a style="display: inline;" class="signup-link" href="/users/<%= offroad.author.id %>"><%= offroad.author.username %></a></em></p>
+                        <span class="float-right mt-1"><%= moment(offroad.createdAt).tz('America/Chicago').format('llll') %></span>    
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <form class="d-inline text-left" action="/offroads/<%= offroad._id %>/favorite" method="POST">
+                                <% if(currentUser) { %> 
+                                    <% if(currentUser && offroad.author.id.equals(currentUser._id)) { %> 
+                                    <% } else { %> 
+                                        <% if (currentUser && offroad.favorites.some(function (favorite) {
+                                            return favorite.equals(currentUser._id)
+                                        })) { %>
+                                            <button class="btn btn-warning">
+                                                <i class="fa fa-star"></i>
+                                            </button>
+                                        <% } else { %>
+                                            <button class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-star"></i>
+                                            </button>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+                            </form> 
+                        </div>
+                    </div>
+                        <% if(currentUser && offroad.author.id.equals(currentUser._id)){ %> 
+                            <button style="text-transform: capitalize;" class="btn btn-warning mt-3" onclick="window.location.href='/offroads/<%=offroad._id%>/edit'">Edit</button>
+                            <form class="delete-form" action="/offroads/<%=offroad._id%>?_method=DELETE" method="POST">
+                                <button style="text-transform: capitalize;" class="btn btn-danger mt-3">Delete</button>
+                            </form>
+                        <% } %> 
+                </div>
+            </div>
+            <div style="width: 100%;" class="card bg-light mx-0 my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-5 comment-headline">
+                            <h4 class="d-inline"><strong>Comments</strong></h4> 
+                        </div>
+                        <div class="col-12 col-sm-7">
+                            <div class="comment-button-section">
+                                <a id="comment-button" style="text-decoration: none; color: white;" class="dirtbike-button text-nowrap" href='/offroads/<%= offroad._id %>/comments/new'>Add New Comment</a>
+                            </div> 
+                        </div>
+                    </div>
+                    <hr> 
+                    <% offroad.comments.forEach(function(comment) { %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="d-inline"><i style="color: #FF4B2B;" class="fa fa-user fa-2x mr-3" aria-hidden="true"></i><em><%= comment.author.username %></em></p>
+                                <span class="float-right"><%= moment(comment.createdAt).fromNow() %></span>
+                                <p class="mt-3 mb-0"><strong><%= comment.headline %></strong></p>
+                                <p class="mt-1 mb-2"><%= comment.text %></p>
+                                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %> 
+                                    <button style="text-transform: capitalize;" class="btn btn-warning mt-2" onclick="window.location.href='/offroads/<%= offroad._id %>/comments/<%= comment._id %>/edit'">Edit</button>
+                                    <form class="delete-form" action="/offroads/<%= offroad._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST"> 
+                                        <button style="text-transform: capitalize;" class="btn btn-danger mt-2">Delete</button>
+                                    </form>
+                                <% } %> 
+                                <hr>
+                            </div>
+                        </div>
+                    <% }) %>  
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 d-none d-md-block"></div>
+        <div class="col-md-4">
+            <div style="width: 100%;" class="card mx-0">
+                <div class="card-img-top show-card-image" id='map'></div>
+                <div class="card-body py-0"><p class="my-3" style="font-size: 16px; font-weight: 400; line-height: 24px;">Location: <%= offroad.location %></p></div>
+            </div>
+            <ul class="list-group my-4">
+                <li class="list-group-item">Title Status: <%= offroad.title %></li>
+                <li class="list-group-item">VIN: <%= offroad.vin %></li>
+                <li class="list-group-item">Odometer: <%= offroad.odometer %></li>
+                <li class="list-group-item">Make: <%= offroad.make %></li>
+                <li class="list-group-item">Model: <%= offroad.makeModel %></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    mapboxgl.accessToken = '<%- MAPBOX_API_KEY %>';
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+    center: [<%- offroad.lng %>, <%- offroad.lat %>], // starting position [lng, lat]
+    zoom: 10 // starting zoom
+    });
+
+    var marker = new mapboxgl.Marker()
+    .setLngLat([<%- offroad.lng %>, <%- offroad.lat %>])
+    .addTo(map);
+</script>
+
+<%- include("../partials/footer") %> 

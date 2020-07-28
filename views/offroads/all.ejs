@@ -1,0 +1,93 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="my-5"><strong>All Dirtbike Listings</strong></h2>
+      </div>
+    </div>
+    <div class="row text-center">
+      <% offroads.forEach(offroad => { %>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="card" style="padding: 5px;">
+              <img class="card-img-top dirtbike-listing-image" src="<%= offroad.image %>"/>
+              <h4 class="top-right py-2 px-2">$<%= offroad.price %></h4>  
+            <div class="card-body pt-2 pb-0 px-0">
+              <div class="text-left">  
+                <span style="vertical-align: bottom;" class="mr-2"><em><%= moment(offroad.createdAt).format('MMM D') %></em></span>
+                <h4 style="display: inline; vertical-align: bottom;" class="card-title"><%= offroad.name %></h4>
+              <p class="text-left mt-1 mb-0">(<%= offroad.location %>)</p>
+            </div> 
+              <div style="background: white; border-top: none;" class="card-footer text-left pt-5 pl-0 pb-0">
+                  <% if(currentUser) { %> 
+                    <% if(currentUser && offroad.author.id.equals(currentUser._id)) { %>
+                    <% } else { %> 
+                      <% if (currentUser && offroad.favorites.some(function (favorite) {
+                        return favorite.equals(currentUser._id)
+                      })) { %>
+                        <button class="btn btn-warning">
+                            <i class="fa fa-star px-3 py-2"></i>
+                        </button>
+                      <% } else { %>
+                        <button class="btn btn-sm btn-secondary px-3 py-2">
+                            <i class="fa fa-star"></i>
+                        </button>
+                      <% } %>
+                    <% } %>
+                  <% } %>
+                  <button style="border-radius: 4px;" class="dirtbike-button" onclick="window.location.href='/offroads/<%= offroad._id %>'">More Info</button>
+              </div>
+          </div>
+          </div>
+        </div>
+        <% }); %>
+        </div>
+  </div>
+
+  <nav aria-label="Page navigation">
+    <% if (pages && pages > 0) { %>
+    <ul class="pagination justify-content-center">
+        <% if (current == 1) { %>
+        <li class="page-item disabled"><a class="page-link">First</a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/offroads/all">First</a></li>
+        <% } %>
+ 
+        <% if (current == 1) { %>
+        <li class="page-item disabled"><a class="page-link">«</a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/offroads/all?page=<%= Number(current) - 1 %>">«</a></li>
+        <% } %>
+ 
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+        <% if (i == current) { %>
+        <li class="active"><a class="page-link"><%= i %></a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/offroads/all?page=<%= i %>"><%= i %></a></li>
+        <% } %>
+        <% if (i == Number(current) + 4 && i < pages) { %>
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+        <% } %>
+        <% } %>
+ 
+        <% if (current == pages) { %>
+        <li class="page-item disabled"><a class="page-link">»</a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/offroads/all?page=<%= Number(current) + 1 %>">»</a></li>
+        <% } %>
+ 
+        <% if (current == pages) { %>
+        <li class="page-item disabled"><a class="page-link">Last</a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/offroads/all?page=<%= pages %>">Last</a></li>
+        <% } %>
+    </ul>
+    <% } %>
+</nav>
+  
+  <%- include("../partials/footer") %>
+  

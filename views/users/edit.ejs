@@ -1,0 +1,67 @@
+<%- include("../partials/header") %> 
+
+<div class="container">
+    <div class="new-form-container">
+        <div class="container">
+            <h2 class="text-center my-4">Edit <%= user.username %>'s Profile Account</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <form action="/users/<%= user._id %>?_method=PUT" method="POST">
+                        <div class="form-group">
+                            <% if(typeof user.firstName === 'undefined') { %> 
+                                <input class="form-control" type="text" name="user[firstName]" value="First Name" autocomplete="off" required>
+                            <% } else { %> 
+                                <input class="form-control" type="text" name="user[firstName]" value="<%= user.firstName %>" autocomplete="off" required>
+                            <% } %> 
+                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <% if(typeof user.lastName === 'undefined') { %> 
+                        <input class="form-control" type="text" name="user[lastName]" value="Last Name" autocomplete="off" required>
+                        <% } else { %> 
+                            <input class="form-control" type="text" name="user[lastName]" value="<%= user.lastName %>" autocomplete="off" required>
+                        <% } %> 
+                    </div>
+                </div> 
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <% if(typeof user.phoneNumber === 'undefined') { %> 
+                            <input class="form-control" type="text" name="user[phoneNumber]" value="Phone Number" required>
+                        <% } else { %> 
+                            <input class="form-control" type="text" name="user[phoneNumber]" value="<%= user.phoneNumber %>" required>
+                        <% } %> 
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                      <div class="form-group">
+                            <input class="form-control" name="user[avatar]" type="text" value="<%= user.avatar %>" required>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input class="form-control" type="email" name="user[email]" value="<%= user.email %>" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group text-center">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <a style="margin-right: 40%; margin-left: 40%;" class="signup-link mb-4 mt-0" href="/users/<%= user._id %>">Back</a>
+                </div>
+            </div>
+        </form>
+        </div>                                            
+    </div>  
+</div>
+
+
+<%- include("../partials/footer") %> 

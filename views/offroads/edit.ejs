@@ -1,0 +1,96 @@
+<%- include("../partials/header") %> 
+
+<div class="container">
+    <div class="new-form-container">
+        <div class="container">
+            <h2 class="text-center my-4">Edit <%= offroad.name %> Listing</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <form action="/offroads/<%= offroad._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="name" value="<%= offroad.name %>" autocomplete="off" required>
+                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="price" value="<%= offroad.price %>" required>
+                    </div>
+                </div> 
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="location" value="<%= offroad.location %>" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+                          <label class="custom-file-label" for="image">Choose file</label>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                        <div class="input-group mt-2 mb-3">
+                            <select name="title" class="custom-select" onchange="('.custom-select option').attr('selected, true')" id="inputGroupSelect02">
+                            <option selected disabled>Title Status...</option>
+                            <option value="Clean">Clean</option>
+                            <option value="Missing">Missing</option>
+                            <option value="Lien">Lien</option>
+                            </select>
+                            <div class="input-group-append">
+                            <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="vin" name="vin" value="<%= offroad.vin %>" placeholder="VIN" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="number" id="odometer" name="odometer" value="<%= offroad.odometer %>" placeholder="Odometer" required>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="make" name="make" value="<%= offroad.make %>" placeholder="Make" required>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="makeModel" name="makeModel" value="<%= offroad.makeModel %>" placeholder="Model" required>
+                    </div>
+                </div>           
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <textarea class="form-control mt-2" required type="text" rows="8" name="description"><%= offroad.description %></textarea>
+                    </div>    
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group text-center">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a style="margin-right: 40%; margin-left: 40%;" class="signup-link text-center mb-4 mt-0" href="/offroads/<%= offroad._id %>">Back</a>
+                </div>
+            </div>
+        </form>
+        </div>                                            
+    </div>  
+</div>
+<script>
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+});
+</script>
+
+<%- include("../partials/footer") %> 

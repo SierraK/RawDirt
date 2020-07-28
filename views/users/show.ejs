@@ -1,0 +1,50 @@
+<%- include("../partials/header") %> 
+
+<div class="container mt-5">
+    <h2 class="mb-3 ml-0 text-left"><strong><%= user.username %>'s Profile</strong></h2>
+    <div class="row">
+        <div class="col-md-7">
+            <img style="display: block; width: 100%;" class="img-fluid img-thumbnail" src="<%= user.avatar %>" alt="User profile picture">
+            <% if(currentUser && user._id.equals(currentUser._id)){ %> 
+                <button style="text-transform: capitalize;" class="btn btn-warning my-3" onclick="window.location.href='/users/<%=user._id%>/edit'">Edit</button>
+                <form class="delete-form" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                    <button style="text-transform: capitalize;" class="btn btn-danger my-3">Delete</button>
+                </form>
+            <% } %>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <ul class="list-group list-group-flush mt-4">
+                <li class="list-group-item"><h3><strong>Contact Information</strong></h3></li>
+                <li class="list-group-item">Name: <% if(typeof user.firstName !== 'undefined' || typeof user.lastName !== 'undefined') { %>
+                    <%= user.firstName + " " + user.lastName %></li>
+                    <% } %>
+                <li class="list-group-item">Email: <a class="signup-link d-inline" href="mailto:<%= user.email %>"><%= user.email %></a></li>
+                <li class="list-group-item">Phone: <%= user.phoneNumber %></li>
+            </ul>
+        </div>
+        <h3 style="width: 100%;" class="profile-username mt-5 mb-4 ml-3"><strong><%= user.username %>'s Listings</strong></h3>
+        <div style="width: 100%; margin: auto;" class="row">
+            <% offroads.forEach(offroad => { %>
+            <div class="col-lg-4 col-sm-6 mb-5">
+                    <div class="card" style="padding: 5px;">
+                        <img class="card-img-top dirtbike-listing-image" src="<%= offroad.image %>"/>
+                        <h4 class="top-right py-2 px-2">$<%= offroad.price %></h4>  
+                      <div class="card-body pt-2 pb-0 px-0">
+                        <div class="text-left">  
+                          <span style="vertical-align: bottom;" class="mr-2"><em><%= moment(offroad.createdAt).format('MMM D') %></em></span>
+                          <h4 style="display: inline; vertical-align: bottom;" class="card-title"><%= offroad.name %></h4>
+                        <p class="text-left mt-1 mb-0">(<%= offroad.location %>)</p>
+                      </div> 
+                        <div style="background: white; border-top: none;" class="card-footer text-left pt-5 pl-0 pb-0">
+                            <button style="border-radius: 10px;" class="dirtbike-button" onclick="window.location.href='/offroads/<%= offroad._id %>'">More Info</button>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        <% }); %> 
+        </div>
+    </div> 
+</div>
+
+<%- include("../partials/footer") %> 

@@ -1,0 +1,97 @@
+<%- include("../partials/header") %> 
+
+<div class="container">
+    <div class="new-form-container">
+        <div class="container">
+            <h2 class="text-center my-4">Create A New Listing</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <form action="/offroads" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="name" placeholder="Posting Title" required>
+                        </div>
+                </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input class="form-control" type="number" name="price" placeholder="Price" required>
+                </div>
+            </div> 
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="location" name="location" placeholder="City, State" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mt-2">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" required>
+                      <label class="custom-file-label" for="image">Choose file</label>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6">
+                    <div class="input-group mt-2 mb-3">
+                        <select name="title" onchange="('.custom-select option').attr('selected, true')" required class="custom-select" id="inputGroupSelect02">
+                          <option selected disabled>Title Status...</option>
+                          <option value="Clean">Clean</option>
+                          <option value="Missing">Missing</option>
+                          <option value="Lien">Lien</option>
+                        </select>
+                        <div class="input-group-append">
+                          <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="vin" name="vin" placeholder="VIN" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input class="form-control" type="number" id="odometer" name="odometer" placeholder="Odometer" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="make" name="make" placeholder="Make" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="makeModel" name="makeModel" placeholder="Model" required>
+                </div>
+            </div>           
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group my-2">
+                    <textarea class="form-control" required type="text" rows="8" name="description" placeholder="Description"></textarea>
+                </div>    
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="form-group text-center">
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <a style="margin-right: 40%; margin-left: 40%;" class="signup-link text-center mb-4 mt-0" href="/offroads">Back</a>
+            </div>
+        </div>
+        </form>
+        </div>                                            
+    </div>  
+</div>
+
+<script>
+$('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+});
+</script>
+
+<%- include("../partials/footer") %> 

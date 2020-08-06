@@ -23,9 +23,9 @@ let indexController = {
               username: req.body.username, 
               email: req.body.email
             });
-          try {
+          try { 
+            // registers new user
             let user = await User.register(newUser, req.body.password);
-            // check passport to make sure that accout doesnt exist already
             passport.authenticate("local")(req, res, () => {
               req.flash("success", "Welcome to RawDirt " + user.username);
               res.redirect("/offroads")
@@ -40,14 +40,13 @@ let indexController = {
         res.render("login");
     },
     // Takes login inputs to sign in 
-    postLogin: async (req, res, next) => {
-      // passport checks to see if that account exists
+    postLogin: (req, res, next) => {
+      // passport checks to authenticate
         passport.authenticate('local', (err, user, info) => {
             if(err) { return next(err); }
-            if(!user) { 
-              req.flash("error", "Login Failed");
-              res.redirect('/login');
+            if(!user) { return req.flash("error", "Login Failed"), res.redirect('/login');
             }
+            // establishes a login session
             req.logIn(user, (err) => {
               if(err) { return next(err); }
               return res.redirect('/offroads');
@@ -56,7 +55,7 @@ let indexController = {
     },
     // render logout view
     getLogout: (req, res) => {
-      // passport logs out
+      // passport logs out terminating the login session
         req.logout();
         req.flash("success", "You logged out!")
         res.redirect("/offroads");    
@@ -67,6 +66,7 @@ let indexController = {
     },
     //  Sends email to user account for forgotten password
     postForgot: (req, res, next) => {
+      //  pass the return value, of every function to the next, then when done will call the main callback - last result of last function, passing its error, if an error happens
         async.waterfall([
             function(done) {
               // creates random token to reset password
@@ -105,14 +105,13 @@ let indexController = {
                 to: user.email,
                 from: 'kingxsierra@gmail.com',
                 subject: 'RawDirt Password Reset',
-                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
                   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                   'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                   'If you did not request this, please ignore this email and your password will remain unchanged.\n'
               };
-              // sends success email to admin if email is sent
+              // sends email
               smtpTransport.sendMail(mailOptions, function(err) {
-                console.log('mail sent');
                 req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                 done(err, 'done');
               });
@@ -135,6 +134,7 @@ let indexController = {
     }, 
     // User resets password with new password and confirms it
     postResetToken: (req, res) => {
+        //  pass the return value, of every function to the next, then when done will call the main callback - last result of last function, passing its error, if an error happens
         async.waterfall([
             function(done) {
               // finds user with reset password token along with date expiration
@@ -164,7 +164,7 @@ let indexController = {
                 }
               });
             },
-            // uses my email info to send email
+            // uses admin email info to send email
             function(user, done) {
               var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail', 

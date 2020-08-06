@@ -54,10 +54,6 @@ body {
     background-image: url('../images/dirtbike1.jpeg');
     animation-delay: 30s; 
   }
-  /* .slideshow li:nth-child(5) { 
-    background-image: url('../images/dirtbike5.jpg');
-    animation-delay: 40s; 
-  } */
 
   @keyframes imageAnimation { 
     0% { 
